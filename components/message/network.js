@@ -12,8 +12,10 @@ const router = express.Router();
 
 //GET
 router.get('/', function(req, res) {
+  const filterUser = req.query.user || null;
+
   controller
-    .getMessages()
+    .getMessages(filterUser)
     .then(messageList => {
       response.success(req, res, messageList, 200);
     })
@@ -37,6 +39,30 @@ router.post('/', function(req, res) {
         400,
         'Error en el controlador'
       );
+    });
+});
+
+//PATCH
+router.patch('/:id', function(req, res) {
+  controller
+    .updateMessage(req.params.id, req.body.message)
+    .then(data => {
+      response.success(req, res, data, 200);
+    })
+    .catch(error => {
+      response.error(req, res, 'Error interno', 500, error);
+    });
+});
+
+//DELETE
+router.delete('/:id', function(req, res) {
+  controller
+    .deleteMessage(req.params.id)
+    .then(() => {
+      response.success(req, res, `Usuario ${req.params.id} eliminado`, 200);
+    })
+    .catch(error => {
+      response.error(req, res, 'Error interno', 500, error);
     });
 });
 

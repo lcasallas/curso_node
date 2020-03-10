@@ -2,9 +2,15 @@ const express = require('express');
 //bogyParser es un metodo de express que nos permite trabajar en el body de la peticion.
 const bodyParser = require('body-parser');
 
+const db = require('./db');
+
 //Se importa el router personalizado.
 const router = require('./network/routes');
 
+const URL =
+  'mongodb+srv://db_user_lecode:PZxTfBizVWOrUpQ7@cluster0-neaoj.mongodb.net/foodplaner';
+
+db(URL);
 //inicializa express
 var app = express();
 
