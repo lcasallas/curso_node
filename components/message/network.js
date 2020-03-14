@@ -4,6 +4,7 @@ const express = require('express');
 const multer = require('multer'); //todo lo que tiene que ver con la transmision de archivos.
 //response es un modulo creado por nosotros para poder estandarizar las respuestas para las diferentes peticiones.
 const response = require('../../network/response');
+const config = require('../../config');
 
 const controller = require('./controller');
 
@@ -12,7 +13,7 @@ const router = express.Router();
 
 //PREPARACION DE MULTER
 const upload = multer({
-  dest: 'public/files/', //ruta de guardar archivo.
+  dest: 'public/' + config.fileRoute + '/', //ruta de guardar archivo.
 });
 
 //GET

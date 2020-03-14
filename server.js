@@ -1,23 +1,27 @@
 const express = require('express');
+const app = express();
+const server = require('http').Server(app);
+
+const config = require('./config');
+
+const cors = require('cors');
 //bogyParser es un metodo de express que nos permite trabajar en el body de la peticion.
 const bodyParser = require('body-parser');
+const socket = require('./socket');
 
 const db = require('./db');
 
 //Se importa el router personalizado.
 const router = require('./network/routes');
 
-const URL =
-  'mongodb+srv://db_user_lecode:PZxTfBizVWOrUpQ7@cluster0-neaoj.mongodb.net/foodplaner';
-
-db(URL);
+db(config.dbUrl);
 //inicializa express
-var app = express();
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //agrego el router a la app de express
 // app.use(router);
+socket.connect(server);
 
 router(app);
 
@@ -26,7 +30,8 @@ router(app);
 //   response.send('hola');
 // });
 
-app.use('/app', express.static('public'));
+app.use(config.publicRoute, express.static('public'));
 
-app.listen('4000');
-console.log('La aplicacion esta escuchando en http://localhost:4000');
+server.listen('4000', function() {
+  console.log(`La aplicacion esta escuchando en ${config.host}:${config.port}`);
+});
